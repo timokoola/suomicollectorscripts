@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# kotus words, you need to generate it yourself
+kotus_all.json
