@@ -130,3 +130,6 @@ dmypy.json
 
 # kotus words, you need to generate it yourself
 kotus_all.json
+
+# output from docker
+output.json
