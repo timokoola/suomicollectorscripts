@@ -33,7 +33,4 @@ EXPOSE 8888
 COPY book_to_wordforms.py .
 COPY kotus_all.json .
 
-
-CMD ["python3", "book_to_wordforms.py"]
-# CMD ["jupyter", "notebook"]
-# CMD ["/bin/bash"]
+ENTRYPOINT ["python3", "book_to_wordforms.py"]

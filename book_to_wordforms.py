@@ -1,7 +1,12 @@
-import requests, libvoikko, json, collections
+import requests, libvoikko, json, collections, sys
 
 
-r = requests.get(f"https://www.gutenberg.org/cache/epub/53050/pg53050.txt")
+if len(sys.argv) > 1:
+    filename = sys.argv[1]
+else:
+    print("Need a url that points to a text file")
+    sys.exit(0)
+r = requests.get(filename)
 
 normalized = r.text.split()
 
