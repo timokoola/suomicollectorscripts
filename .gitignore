@@ -133,3 +133,5 @@ kotus_all.json
 
 # output from docker
 output.json
+*.jsonl
+fullest_text.txt
