@@ -34,7 +34,6 @@ def toLine(item):
 def toKey(item):
     pass
 
-
 simple = [toLine(x) for x in kotus['kotus-sanalista']['st'] if "t" in x and not isinstance(x["t"], typing.List)]
 complex_ = [toLine(x) for x in kotus['kotus-sanalista']['st'] if "t" in x and isinstance(x["t"], typing.List)]
 
@@ -64,5 +63,5 @@ f.write(json.dumps(samples, sort_keys=True, indent=4))
 f.close()
 
 f = open(f"kotus_all.json", "w+")
-f.write(json.dumps(full, sort_keys=True, indent=4))
+f.write(json.dumps(full))
 f.close()

@@ -11,6 +11,9 @@ RUN apt-get update && apt-get install -y python3-pip libvoikko-dev python-libvoi
        metakernel \
        zmq \
        libvoikko \
+       jsonlines \
+       humanize \
+       beautifulsoup4 \
        requests \
      && rm -rf /var/lib/apt/lists/*
 
@@ -31,6 +34,7 @@ USER ${username}
 EXPOSE 8888
 
 COPY book_to_wordforms.py .
+COPY extract_gutenberg_finish.py .
 COPY kotus_all.json .
 
-ENTRYPOINT ["python3", "book_to_wordforms.py"]
+ENTRYPOINT ["python3", "extract_gutenberg_finish.py"]

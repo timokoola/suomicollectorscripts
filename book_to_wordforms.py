@@ -1,4 +1,4 @@
-import requests, libvoikko, json, collections, sys
+import requests, libvoikko, json, jsonlines, collections, sys
 
 
 if len(sys.argv) > 1:
@@ -8,7 +8,7 @@ else:
     sys.exit(0)
 r = requests.get(filename)
 
-normalized = r.text.split()
+normalized = list(set(r.text.split()))
 
 v = libvoikko.Voikko("fi")
 word_forms = [
@@ -68,8 +68,11 @@ def queryform(form, list_):
 
 
 f = open("output.json", "w+")
-f.write(json.dumps(results))
+f.write(json.dumps(results, sort_keys=True, indent=4))
 f.close()
+
+with jsonlines.open('output.jsonl', 'w') as writer:
+    writer.write_all(results)
 
 
 print(summary)
