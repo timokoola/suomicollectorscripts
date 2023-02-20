@@ -24,14 +24,8 @@ ENV HOME /home/${username}
 
 WORKDIR /home/${username}
 
-# Create the configuration file for jupyter and set owner
-RUN echo "c.NotebookApp.ip = '*'" > jupyter_notebook_config.py && chown ${username} *
-
 # Switch to our newly created user
 USER ${username}
-
-# Allow incoming connections on port 8888
-EXPOSE 8888
 
 # copy the gutenberg files to container
 COPY gutenberg/ gutenberg/
@@ -39,5 +33,5 @@ COPY gutenberg/ gutenberg/
 COPY kotus_all.json .
 COPY generate_initial_database.py .
 
-#ENTRYPOINT ["python3", "generate_initial_database.py"]
+ENTRYPOINT ["python3", "generate_initial_database.py"]
 

@@ -60,6 +60,11 @@ def download_book(code: str) -> None:
 def get_kotus_data() -> dict:
     f = open("kotus_all.json")
     kotus = json.loads(f.read())
+    pre_len = len(kotus)
+    # remove duplicates
+    kotus = list({v["word"]: v for v in kotus}.values())
+    # report how many duplicates were removed
+    print(f"Removed {pre_len - len(kotus)} duplicates")
     f.close()
     return kotus
 
@@ -70,8 +75,8 @@ def get_kotus_nimentos() -> List[dict]:
     kotus = get_kotus_data()
     nimentos = []
     for item in kotus:
-        # if tn > 52, it is not a noun
-        if item["tn"] > 52:
+        # if tn > 51, it is not a noun
+        if item["tn"] > 51:
             continue
         word = {**item}
         word["BASEFORM"] = word["word"]
@@ -188,6 +193,9 @@ if __name__ == "__main__":
             # words from gutenberg that have been run through voikko
             gutenberg_results = get_book_words_in_kotus(kotus_dict, flat_words)
 
+            pre_addition = len(unique_words)
+
+            # extract unique words from gutenberg results
             unique_gutenberg_words = extract_unique_words(
                 unique_words, gutenberg_results
             )
@@ -199,7 +207,7 @@ if __name__ == "__main__":
             )
 
             # append gutenbergs results to the output file
-            with jsonlines.open("output.jsonl", "a") as writer:
+            with jsonlines.open("/feeds/output.jsonl", "a") as writer:
                 writer.write_all(unique_gutenberg_words)
 
             file_index += 1

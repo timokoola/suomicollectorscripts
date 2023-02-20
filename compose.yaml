@@ -1,0 +1,15 @@
+services:
+  database_initializer:
+    build: 
+      context: .
+      dockerfile: docker/database_initializer/Dockerfile
+    volumes:
+      - ./feeds:/feeds
+  feed_handler:
+    build: 
+      context: .
+      dockerfile: docker/feed_handler/Dockerfile
+    volumes:
+      - ./feeds:/feeds
+      - ~/.config/gcloud:/home/tkoola/.config/gcloud
+  

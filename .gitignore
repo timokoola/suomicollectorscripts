@@ -136,5 +136,11 @@ output.json
 *.jsonl
 fullest_text.txt
 
+# opml files
+*.opml
+
 # gutenberg directory
 gutenberg/
+
+# feeds directory
+feeds/

@@ -9,6 +9,8 @@ requests = "*"
 beautifulsoup4 = "*"
 humanize = "*"
 jsonlines = "*"
+opml = "*"
+feedparser = "*"
 
 [dev-packages]
 black = "*"
