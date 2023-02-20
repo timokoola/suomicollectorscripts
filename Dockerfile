@@ -7,15 +7,15 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Install required packages for notebooks
 RUN apt-get update && apt-get install -y python3-pip libvoikko-dev python-libvoikko voikko-fi wget && pip install --upgrade pip && pip install \
-       jupyter \
-       metakernel \
-       zmq \
-       libvoikko \
-       jsonlines \
-       humanize \
-       beautifulsoup4 \
-       requests \
-     && rm -rf /var/lib/apt/lists/*
+  jupyter \
+  metakernel \
+  zmq \
+  libvoikko \
+  jsonlines \
+  humanize \
+  beautifulsoup4 \
+  requests \
+  && rm -rf /var/lib/apt/lists/*
 
 # Create a user that does not have root privileges 
 ARG username=tkoola
@@ -33,8 +33,11 @@ USER ${username}
 # Allow incoming connections on port 8888
 EXPOSE 8888
 
-COPY book_to_wordforms.py .
-COPY extract_gutenberg_finish.py .
-COPY kotus_all.json .
+# copy the gutenberg files to container
+COPY gutenberg/ gutenberg/
 
-ENTRYPOINT ["python3", "extract_gutenberg_finish.py"]
+COPY kotus_all.json .
+COPY generate_initial_database.py .
+
+#ENTRYPOINT ["python3", "generate_initial_database.py"]
+

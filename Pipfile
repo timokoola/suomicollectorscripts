@@ -5,8 +5,13 @@ name = "pypi"
 
 [packages]
 pymongo = "*"
+requests = "*"
+beautifulsoup4 = "*"
+humanize = "*"
+jsonlines = "*"
 
 [dev-packages]
+black = "*"
 
 [requires]
 python_version = "3.10"

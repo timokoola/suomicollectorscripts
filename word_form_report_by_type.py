@@ -2,8 +2,14 @@ import sys
 from collections import defaultdict
 from pymongo import MongoClient
 
-# read word from command line
-word = sys.argv[1]
+# bail out if not enough arguments and print usage
+if len(sys.argv) < 3:
+    print("Usage: python3 word_form_report_by_type.py <tn> <av>")
+    sys.exit(0)
+
+# read av and tn from command line
+tn = sys.argv[1]
+av = sys.argv[2]
 
 # mongodb connection
 client = MongoClient('localhost', 27017)
@@ -14,21 +20,21 @@ db = client.suomi
 # connect to collection suomi
 collection = db.suomi
 
-# find all documents with word form word
+# make tn  a integer
+tn = int(tn)
+
+# find all documents where tn and av match
 # include only focus null and possessive null
 cursor = collection.find({
-    'word': word, 
+    'tn': tn,
+    'av': av,
     'POSSESSIVE': {
         '$eq': None
-    }, 
+    },
     'FOCUS': {
         '$eq': None
     }
 })
-# count number of documents
-count = 0
-
-# {'_id': ObjectId('63efd750a355b7e205b36d61'), 'av': '_', 'tn': 38, 'word': 'hevonen', 'BOOKWORD': 'hevosineen', 'BASEFORM': 'hevonen', 'CLASS': 'nimisana', 'FSTOUTPUT': '[Ln][Xp]hevonen[X]hevos[Sko][Nm]inee[O3]n', 'NUMBER': 'plural', 'POSSESSIVE': '3', 'SIJAMUOTO': 'seuranto', 'STRUCTURE': '=pppppppppp', 'WORDBASES': '+hevonen(hevonen)'}
 
 # number ordering
 numbers = ["singular", "plural"]
@@ -39,8 +45,13 @@ sijamuodot = ["nimento","kohdanto","omanto","olento","osanto","eronto","tulento"
 # default dictionary to store sijamuoto and number
 words = defaultdict(list)
 
+count = 0
+
 # iterate over all documents
 for document in cursor:
+    # if no NUMBER or SIJAMUOTO, skip
+    if 'NUMBER' not in document or 'SIJAMUOTO' not in document:
+        continue
     dictionary_key = document['NUMBER'] + document['SIJAMUOTO']
     # print document
     words[dictionary_key].append(document['BOOKWORD'])
@@ -59,7 +70,6 @@ missing_forms = []
 # sijamuoto, singular, plural
 
 # print word, tv, and av
-print("word", word)
 print("tn", document['tn'])
 print("av", document['av'])
 
@@ -68,10 +78,10 @@ print("sijamuoto", "singular", "plural")
 
 for sijamuoto in sijamuodot:
     print (sijamuoto, end="\t")
-    # singular form for sijamuoto
-    singular_forms = ", ".join(list(set(words['singular' + sijamuoto])))
+    # singular form for sijamuoto, pick random example word
+    singular_forms = list(set(words['singular' + sijamuoto]))
     # plural form for sijamuoto
-    plural_forms =  ", ".join(list(set(words['plural' + sijamuoto])))
+    plural_forms =  list(set(words['plural' + sijamuoto]))
 
     # if singular form is missing, add to missing_forms
     if len(singular_forms) == 0:
@@ -80,9 +90,11 @@ for sijamuoto in sijamuodot:
     if len(plural_forms) == 0:
         missing_forms.append(sijamuoto + " plural")
     # print singular form
-    print(singular_forms, end="\t")
+    singular_form_example = singular_forms[0] if len(singular_forms) > 0 else ""
+    print(singular_form_example, end="\t")
     # print plural form
-    print(plural_forms)
+    plural_form_example = plural_forms[0] if len(plural_forms) > 0 else ""
+    print(plural_form_example)
 
 
 # print missing forms

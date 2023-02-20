@@ -135,3 +135,6 @@ kotus_all.json
 output.json
 *.jsonl
 fullest_text.txt
+
+# gutenberg directory
+gutenberg/
