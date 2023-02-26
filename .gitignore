@@ -144,3 +144,6 @@ gutenberg/
 
 # feeds directory
 feeds/
+
+# downloads directory
+downloads/

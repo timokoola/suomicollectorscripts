@@ -11,6 +11,7 @@ humanize = "*"
 jsonlines = "*"
 opml = "*"
 feedparser = "*"
+google-cloud-logging = "*"
 
 [dev-packages]
 black = "*"
